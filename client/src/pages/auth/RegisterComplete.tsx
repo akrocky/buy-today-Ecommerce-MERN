@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
-import {  updatePassword } from "firebase/auth";
+import {  User, updatePassword } from "firebase/auth";
 
 import {  signInWithEmailLink } from "firebase/auth";
 
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import {  useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../store/useStore";
-import { selectUser } from "../../store/slices/userSlice";
+import { useAppDispatch, useAppSelector } from "../../store/useStore";
+import { selectUser, userLogIn } from "../../store/slices/userSlice";
+import { createOrUpdateUserApi } from "../../functions/auth";
+
 
 function RegisterComplete() {
 
@@ -15,7 +17,7 @@ function RegisterComplete() {
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
   
-  
+  const dispatch=useAppDispatch();
   const navigate= useNavigate();
   
   const user=useAppSelector(selectUser)
@@ -55,11 +57,24 @@ return;
 const user= auth.currentUser;
 
 user !== null && await updatePassword(user  , password);
-const idTokenResult= await user?.getIdTokenResult()
+const idTokenResult= await (user as User).getIdTokenResult()
 console.log(user);
 console.log(idTokenResult);
     // redux store
+// send token to backend 
 
+const res= await createOrUpdateUserApi(idTokenResult.token as string)
+
+dispatch(userLogIn({
+  user:{
+    userName:res.data.name,
+    email:res.data.email as string,
+    token:idTokenResult.token,
+    role:res.data.role,
+    _id:res.data._id
+
+  }
+ }))
     // redirect
     navigate('/')
   }

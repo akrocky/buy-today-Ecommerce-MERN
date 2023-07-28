@@ -2,4 +2,4 @@
 
 #### this is a personal project where  most of the important feature of Ecommerce  is available .
 ### Main Technology: 
-     React, jest, express, mongoose,mongodb
+     Vite, React, jest, express, mongoose,mongodb

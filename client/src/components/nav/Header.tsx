@@ -47,18 +47,19 @@ selectedKeys={[current]}
   <Item
     key="home"
     icon={<AppstoreOutlined />}
+    className='text-info'
   >
-    <Link style={LinkStyle} to="/">Home</Link>
+    <Link style={LinkStyle} to="/" >Home</Link>
   </Item>
   
  {user && <SubMenu icon={<SettingOutlined />} key="username" title={user.email && user.email.split('@')[0]} className='ms-auto'>
-<Item key="setting1">
+<Item key="setting1" className='text-info'>
 Option 1
 </Item>
-<Item key="setting2">
+<Item key="setting2" className='text-info'>
 Option 2
 </Item>
-<Item icon={<LogoutOutlined/>} key="logout" onClick={handleLogout}>
+<Item icon={<LogoutOutlined/>} key="logout" onClick={handleLogout} className='text-info'>
 Logout
 </Item>
   </SubMenu>
@@ -70,7 +71,7 @@ Logout
   icon={<UserAddOutlined />}
   className=" ms-auto">
 
- <Link style={LinkStyle} to="/register">Register</Link>
+ <Link style={LinkStyle} to="/register" className='text-info'>Register</Link>
 </Item>
 }
   {
@@ -79,7 +80,7 @@ Logout
     onClick={onClick}
     icon={<UserOutlined />}
   >
-  <Link style={LinkStyle} to="/login">Login</Link>
+  <Link style={LinkStyle} to="/login" className='text-info'>Login</Link>
   </Item>
   }
  

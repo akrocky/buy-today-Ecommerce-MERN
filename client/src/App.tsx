@@ -16,6 +16,13 @@ import { auth } from "./firebase";
 import { useAppDispatch } from "./store/useStore";
 import { userLogIn } from "./store/slices/userSlice";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import { currentUserApi } from "./functions/auth";
+
+import History from "./pages/users/History";
+import UserRoute from "./components/routes/UserRoute";
+import Password from "./pages/users/Password";
+import wishList from "./pages/users/WishList";
+
 
 
 function App() {
@@ -24,19 +31,24 @@ function App() {
 useEffect(() => {
  const unsubscribe=  auth.onAuthStateChanged(async (user)=>{
   if (user) {
-    const idTokenTesult= await user.getIdTokenResult()
+    const idTokenResult= await user.getIdTokenResult()
 
-     dispatch(userLogIn({
-       user: {
-         email: user.email as string,
-         token:idTokenTesult.token  as string 
-       }
-     })
-     )
+    const res= await currentUserApi(idTokenResult.token as string)
+
+ dispatch(userLogIn({
+   user:{
+     userName:res.data.name,
+     email:res.data.email as string,
+     token:idTokenResult.token,
+     role:res.data.role,
+     _id:res.data._id
+
+   }
+  }))
   }
  })
 return ()=> unsubscribe();
-}, [])
+}, [dispatch])
 
   return (
     <>
@@ -49,6 +61,9 @@ return ()=> unsubscribe();
         <Route path="/register" element={<Register />} />
         <Route path="/register/complete" element={<RegisterComplete />} />
         <Route path="/forgot/password" element={<ForgotPassword />} />
+        <Route path="/user/history" element={<UserRoute component={History } />} />
+        <Route path="/user/password" element={<UserRoute component={Password } />} />
+        <Route path="/user/wishlist" element={<UserRoute component={wishList } />} />
         
       </Routes>
    

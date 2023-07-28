@@ -4,9 +4,11 @@ import type { RootState } from '../store'
 
 // Define a type for the slice state
  type TUser= {
+  userName:string;
   email:string;
   token:string;
-  
+  role:string;
+  _id:string;
   }
 export type TUserState ={
   user:TUser | null
@@ -23,8 +25,9 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     userLogIn: (state,action: PayloadAction<TUserState >):void => {
-      const {email,token}=action.payload.user as TUser
-      state.user={...state.user,email,token}
+      const {_id,userName,email,token,role}=action.payload.user as TUser
+      console.log(action.payload.user);
+      state.user={...state.user,_id,userName,email,token,role}
     },
     userLogOut: (state
       ) => {

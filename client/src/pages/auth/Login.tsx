@@ -7,6 +7,10 @@ import { auth } from "../../firebase";
 import { useAppDispatch, useAppSelector } from "../../store/useStore";
 import { selectUser, userLogIn } from "../../store/slices/userSlice";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { createOrUpdateUserApi } from "../../functions/auth";
+
+
+
 
 function Login() {
   const [email,setEmail]=useState("")
@@ -14,33 +18,37 @@ function Login() {
   const [loading,setLoading]=useState(false)
   const dispatch=useAppDispatch();
   const navigate= useNavigate();
-  const location=useLocation();
+ 
   const user=useAppSelector(selectUser)
    
     useEffect(() => {
       if (user && user.token) {
-        navigate("/");
+        roleBasedRedirected(user.role)
       }
-    }, [navigate, user])
+    }, [roleBasedRedirected, user])
   const handleGoogleLogin=async()=>{
     setLoading(true)
 try {
   const provider = new GoogleAuthProvider();
  const result= await signInWithPopup(auth, provider)
  const {user}= result;
-   const idTokenResult= await user.getIdTokenResult()
- 
-   
-   dispatch(userLogIn({
-    user:{
-      email:user.email as string,
-      token:idTokenResult.token
+   const idTokenResult= await user.getIdTokenResult();
+ // send token to backend 
 
-    }
-   }));
+ const res= await createOrUpdateUserApi(idTokenResult.token as string)
+
+ dispatch(userLogIn({
+   user:{
+     userName:res.data.name,
+     email:res.data.email as string,
+     token:idTokenResult.token,
+     role:res.data.role,
+     _id:res.data._id
+
+   }
+  }))
     
-   const from = location.state?.from?.pathname || "/"; 
-   navigate(from,{replace:true})
+  roleBasedRedirected(res.data.role)
 } catch (error) {
   let message = 'Unknown Error'
   if (error instanceof Error) { message = error.message}
@@ -54,21 +62,26 @@ try {
  
     try {
    const result=  await signInWithEmailAndPassword(auth, email, password)
-   
+   console.log(result);
    const {user}= result;
    const idTokenResult= await user.getIdTokenResult()
- 
+  const res= await createOrUpdateUserApi(idTokenResult.token as string)
+  
+    dispatch(userLogIn({
+      user:{
+        userName:res.data.name,
+        email:res.data.email as string,
+        token:idTokenResult.token,
+        role:res.data.role,
+        _id:res.data._id
+  
+      }
+     }))
    
-   dispatch(userLogIn({
-    user:{
-      email:user.email as string,
-      token:idTokenResult.token
-
-    }
-   }))
+   roleBasedRedirected(res.data.role)
+  
     
-     const from = location.state?.from?.pathname || "/"; 
- navigate(from,{replace:true})
+     
     } catch (error) {
       let message = 'Unknown Error'
   if (error instanceof Error) { message = error.message}
@@ -79,6 +92,14 @@ try {
      
 
   
+  }
+  function roleBasedRedirected(role:string) {
+    if (role==='admin') {
+      navigate("/admin/dashboard")
+    }else{
+      
+   navigate("/user/history")
+    }
   }
   const loginForm=()=><form onSubmit={handleSubmit}>
     <div className="form-group">
@@ -121,3 +142,4 @@ try {
 }
 
 export default Login
+

@@ -53,12 +53,13 @@ selectedKeys={[current]}
   </Item>
   
  {user && <SubMenu icon={<SettingOutlined />} key="username" title={user.email && user.email.split('@')[0]} className='ms-auto'>
-<Item key="setting1" className='text-info'>
-Option 1
-</Item>
-<Item key="setting2" className='text-info'>
-Option 2
-</Item>
+{user && user.role ==='subscriber' && <Item key="setting1" className='text-info'>
+<Link style={LinkStyle} to="/user/history" >Dashboard</Link>
+</Item>}
+{user && user.role ==='admin' && <Item key="setting1" className='text-info'>
+<Link style={LinkStyle} to="/admin/dashboard" >Dashboard</Link>
+</Item>}
+
 <Item icon={<LogoutOutlined/>} key="logout" onClick={handleLogout} className='text-info'>
 Logout
 </Item>

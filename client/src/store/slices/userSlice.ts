@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 
 // Define a type for the slice state
- type TUser= {
+export type TUser= {
   userName:string;
   email:string;
   token:string;

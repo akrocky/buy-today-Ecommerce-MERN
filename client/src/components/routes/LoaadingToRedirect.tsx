@@ -12,7 +12,7 @@ const LoaadingToRedirect = () => {
         },1000)
 
         // redirect once count is equal to 0
-        count ===0 && navigate('/login');
+        count ===0 && navigate('/');
       
         return ()=> clearInterval(interval);
     }, [count])

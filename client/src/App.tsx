@@ -22,6 +22,9 @@ import History from "./pages/users/History";
 import UserRoute from "./components/routes/UserRoute";
 import Password from "./pages/users/Password";
 import wishList from "./pages/users/WishList";
+import AdminRoute from "./components/routes/AdminRoute";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import CategoryCreate from "./pages/admin/category/CategoryCreate";
 
 
 
@@ -64,6 +67,8 @@ return ()=> unsubscribe();
         <Route path="/user/history" element={<UserRoute component={History } />} />
         <Route path="/user/password" element={<UserRoute component={Password } />} />
         <Route path="/user/wishlist" element={<UserRoute component={wishList } />} />
+        <Route path="/admin/dashboard" element={<AdminRoute component={AdminDashboard } />} />
+        <Route path="/admin/category" element={<AdminRoute component={CategoryCreate } />} />
         
       </Routes>
    

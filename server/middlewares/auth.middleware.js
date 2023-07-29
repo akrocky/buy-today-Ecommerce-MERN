@@ -3,6 +3,7 @@ const User = require("../models/user.model")
 
 exports.authCheck=async(req,res,next)=>{
 // console.log(req.headers);
+console.log("in auth check");
 try {
     const firebaseUser=await admin.auth().verifyIdToken(req.headers.authtoken)
          req.user=firebaseUser;
@@ -22,6 +23,7 @@ try {
 
 
 exports.adminCheck = async (req, res, next) =>{
+    console.log("in admin check");
  const {email} = req.user;
  const adminUser = await User.findOne({email});
 

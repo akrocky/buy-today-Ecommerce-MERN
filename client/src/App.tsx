@@ -25,6 +25,10 @@ import wishList from "./pages/users/WishList";
 import AdminRoute from "./components/routes/AdminRoute";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import CategoryCreate from "./pages/admin/category/CategoryCreate";
+import CategoryUpdate from "./pages/admin/category/CategoryUpdate";
+import SubcategoryCreate from "./pages/admin/subcategory/SubcategoryCreate";
+import SubcategoryUpdate from "./pages/admin/subcategory/SubcategoryUpdate";
+import ProductCreat from "./pages/admin/product/ProductCreat";
 
 
 
@@ -69,6 +73,10 @@ return ()=> unsubscribe();
         <Route path="/user/wishlist" element={<UserRoute component={wishList } />} />
         <Route path="/admin/dashboard" element={<AdminRoute component={AdminDashboard } />} />
         <Route path="/admin/category" element={<AdminRoute component={CategoryCreate } />} />
+        <Route path="/admin/category/:slug" element={<AdminRoute component={CategoryUpdate } />} />
+        <Route path="/admin/subcategory" element={<AdminRoute component={SubcategoryCreate } />} />
+        <Route path="/admin/subcategory/:slug" element={<AdminRoute component={SubcategoryUpdate} />} />
+        <Route path="/admin/product" element={<AdminRoute component={ProductCreat} />} />
         
       </Routes>
    

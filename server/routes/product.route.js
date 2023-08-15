@@ -4,11 +4,12 @@ const router=express.Router();
 // middlewares
 const {authCheck,adminCheck}= require('../middlewares/auth.middleware')
 //controllers
-const  {createProduct, getProductsList} =require('../controllers/product.controller')
+const  {createProduct, getProductsList,removeProduct} =require('../controllers/product.controller')
 
 router.post('/product',authCheck,adminCheck, createProduct);
-router.get('/products', getProductsList);
+router.get('/products/:count', getProductsList);
 
+router.delete('/product/:slug',authCheck,adminCheck,removeProduct)
 
 
 

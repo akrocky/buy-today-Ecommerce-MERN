@@ -29,6 +29,7 @@ import CategoryUpdate from "./pages/admin/category/CategoryUpdate";
 import SubcategoryCreate from "./pages/admin/subcategory/SubcategoryCreate";
 import SubcategoryUpdate from "./pages/admin/subcategory/SubcategoryUpdate";
 import ProductCreat from "./pages/admin/product/ProductCreat";
+import AllProducts from "./pages/admin/product/AllProducts";
 
 
 
@@ -76,6 +77,7 @@ return ()=> unsubscribe();
         <Route path="/admin/category/:slug" element={<AdminRoute component={CategoryUpdate } />} />
         <Route path="/admin/subcategory" element={<AdminRoute component={SubcategoryCreate } />} />
         <Route path="/admin/subcategory/:slug" element={<AdminRoute component={SubcategoryUpdate} />} />
+        <Route path="/admin/products" element={<AdminRoute component={AllProducts} />} />
         <Route path="/admin/product" element={<AdminRoute component={ProductCreat} />} />
         
       </Routes>

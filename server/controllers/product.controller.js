@@ -19,6 +19,23 @@ try {
 
 exports.getProductsList=async(req, res)=>{
 
-  const products= await Product.find({});
+  const products= await Product.find({})
+  .limit(parseInt(req.params.count))
+  .populate("category")
+  .populate("subcategory")
+  .sort([['createdAt',"desc"]]);
+
   res.json(products)
+}
+exports.removeProduct=async(req, res)=>{
+  try {
+    const deleted= await Product.findOneAndRemove({slug: req.params.slug});
+    res.json(deleted)
+    
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send('product delete failed')
+  }
+
+
 }

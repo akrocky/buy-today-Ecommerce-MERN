@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react"
 import AdminNav from "../../../components/nav/AdminNav"
-import { createProductApi } from "../../../functions/product";
+import { TProduct, createProductApi } from "../../../functions/product";
 
  import { useAppSelector } from "../../../store/useStore";
 import { TUser, selectUser } from "../../../store/slices/userSlice";
@@ -44,7 +44,7 @@ const loadCategories=()=> getAllCategoriesApi().then((c)=>{
   
   const handleSubmit=(e: React.SyntheticEvent)=>{
     e.preventDefault();
-    createProductApi(values,(user as TUser ).token)
+    createProductApi(values as unknown as TProduct,(user as TUser ).token)
     .then((res)=> {
       setLoading(false);
           

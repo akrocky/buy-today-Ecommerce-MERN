@@ -1,5 +1,5 @@
 import axios from "axios";
-type TProduct={ title:string,
+export type TProduct={ title:string,
 description:string,
 price:number,
 category:string,
@@ -11,8 +11,8 @@ images:string[],
 color:string,
 brand:string}
 
-export const createProductApi = async(product,authtoken: string)=>{
-    console.log(product);
+export const createProductApi = async(product:TProduct,authtoken: string)=>{
+  
      
      return await axios.post(
       ` ${import.meta.env.VITE_APP_API}/product`,product,
@@ -23,3 +23,24 @@ export const createProductApi = async(product,authtoken: string)=>{
       }
       )
     }
+export const removeProductApi = async(slug: string
+  ,authtoken: string)=>{
+  
+     
+     return await axios.delete(
+      ` ${import.meta.env.VITE_APP_API}/product/${slug}`,
+      {
+        headers:{
+            authtoken
+        }
+      }
+      )
+    }
+
+    export const getProductsByCountApi = async(count:number)=>{
+
+ 
+      return await axios.get(
+       ` ${import.meta.env.VITE_APP_API}/products/${count}`)
+     }
+    

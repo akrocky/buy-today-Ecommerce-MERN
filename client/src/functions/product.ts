@@ -43,4 +43,10 @@ export const removeProductApi = async(slug: string
       return await axios.get(
        ` ${import.meta.env.VITE_APP_API}/products/${count}`)
      }
+    export const getProductApi = async(slug:string)=>{
+
+ 
+      return await axios.get(
+       ` ${import.meta.env.VITE_APP_API}/product/${slug}`)
+     }
     

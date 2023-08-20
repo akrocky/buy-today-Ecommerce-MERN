@@ -13,7 +13,7 @@ import { getAllCategoriesApi, getCategorySubcategoryApi} from "../../../function
 import Fileupload from "../../../components/forms/Fileupload";
 import {LoadingOutlined } from "@ant-design/icons"
 
-const initialState:TValues={
+ const initialState:TValues={
   title:'Macbook Pro',
   description:'This is the best apple product',
   price:'3000',

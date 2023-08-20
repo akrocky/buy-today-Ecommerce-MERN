@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react"
 import AdminProductCard from "../../../components/cards/AdminProductCard";
 import AdminNav from "../../../components/nav/AdminNav";
-import { getProductsByCountApi, TProduct } from "../../../functions/product";
+import { getProductsByCountApi, removeProductApi, TProduct } from "../../../functions/product";
+import { TUser, selectUser } from "../../../store/slices/userSlice";
+import { useAppSelector } from "../../../store/useStore";
+import { toast } from "react-toastify";
 
 
 
@@ -9,6 +12,7 @@ import { getProductsByCountApi, TProduct } from "../../../functions/product";
 const AllProducts =() => {
   const [products,setProducts]=useState([]);
   const [loading, setLoading]=useState(false);
+  const user= useAppSelector(selectUser)
   useEffect(() => {
     
      loadApllProducts();
@@ -28,6 +32,20 @@ const AllProducts =() => {
     });
     
   }
+
+  const handleRemoved=(slug:string)=>{
+   
+        if (window.confirm("Are you sure ?")) {
+         removeProductApi(slug,(user as TUser).token)
+         .then(res=> {
+                loadApllProducts();
+                toast.error(`${res.data.title} is deleted`)
+         })
+         .catch(err => {
+          toast.error(err.message)
+         })
+        }
+  }
   
   return (
     <div className="container-fluid">
@@ -45,9 +63,9 @@ const AllProducts =() => {
          {
          products.map((product: TProduct)=>(
           <div className="col-md-4 pb-3" key={product.title} >
-            <AdminProductCard  product={product}/>
+            <AdminProductCard  product={product} handleRemoved={handleRemoved}/>
           </div>
-          )
+          ) 
          )
          }
          </div>

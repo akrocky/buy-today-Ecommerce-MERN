@@ -39,3 +39,17 @@ exports.removeProduct=async(req, res)=>{
 
 
 }
+exports.getProduct=async(req, res)=>{
+ 
+  try {
+    const product= await Product.findOne({slug: req.params.slug}).populate("category").populate("subcategory");
+
+    res.json(product)
+    
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send('product not found')
+  }
+
+
+}

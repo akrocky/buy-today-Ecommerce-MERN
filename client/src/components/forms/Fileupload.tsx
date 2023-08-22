@@ -78,7 +78,7 @@ setValues({...values, images: filterImages});
      </Space>
    </div>
     <div className="row">
-        <label className="btn btn-primary " style={{width:"20%",minWidth:'120px'}}>Choose File
+        <label className="btn btn-primary btn-raised mt-2" style={{width:"20%",minWidth:'120px'}}>Choose File
         <input type="file" hidden multiple accept="images/*" onChange={fileUploadAndResizee} />
         </label>
        

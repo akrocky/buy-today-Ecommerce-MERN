@@ -28,10 +28,11 @@ setArrayOfSub:React.Dispatch<React.SetStateAction<[]>>;
 handleCategoryChange:(e : any) => void  ;
 subOptions: TCateory[];
 arrayOfSub:  [];
+selectedCategory: string;
 
 }
 
-const ProductUpdateForm = ({handleSubmit, handleChange, values,setValues, handleCategoryChange,categories,subOptions,arrayOfSub,setArrayOfSub}:TProductCreateForm) => {
+const ProductUpdateForm = ({handleSubmit, handleChange, values,setValues, handleCategoryChange,categories,subOptions,arrayOfSub,setArrayOfSub,selectedCategory}:TProductCreateForm) => {
     const {title, description, price, category,subcategory,shipping,quantity,images,colors,brands,color,brand} =  values;
   return (
     
@@ -90,11 +91,11 @@ const ProductUpdateForm = ({handleSubmit, handleChange, values,setValues, handle
     <label className=" mb-2"> Category</label>
     <select  name="category" 
      
-  
+  value={selectedCategory ? selectedCategory : category._id}
       style={{ width: '100%' }}
     className="form-control border-info mb-2" onChange={handleCategoryChange}
     >
-        <option >{category ? category.name : "Please select"}</option>
+        
     {categories.length >0 && categories.map((c:TCateory)=> (
 <option key={c._id} value={c._id}>{c.name}</option>
     ))

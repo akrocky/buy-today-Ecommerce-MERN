@@ -6,12 +6,15 @@ import AdminNav from "../../../components/nav/AdminNav"
 import { TUser, selectUser } from "../../../store/slices/userSlice";
 
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useNavigation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getProductApi } from "../../../functions/product";
+import { getProductApi, updateProductApi } from "../../../functions/product";
 
 import ProductUpdateForm, { TValues } from "../../../components/forms/ProductUpdateForm";
 import { getAllCategoriesApi, getCategorySubcategoryApi } from "../../../functions/category";
+import Fileupload from "../../../components/forms/Fileupload";
+import { LoadingOutlined } from "@ant-design/icons";
+import { toast } from "react-toastify";
 const initialState:TValues={
     title:'',
     description:'',
@@ -37,8 +40,10 @@ const ProductUpdate = () => {
     const [subOptions, setSubOptions] = useState([]);
     const [categories, setcategories] = useState([]);
     const [arrayOfSub, setArrayOfSub] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState({});
      
- const user= useAppSelector(selectUser)
+ const user= useAppSelector(selectUser);
+ const navigate= useNavigate()
  const { slug  } = useParams();
 
  useEffect(() => {
@@ -71,6 +76,19 @@ const ProductUpdate = () => {
 })
  const handleSubmit=(e: React.SyntheticEvent)=>{
   e.preventDefault();
+  setLoading(true);
+  values.subcategory=arrayOfSub;
+ 
+  values.category= selectedCategory ? selectedCategory : values.category ;
+  updateProductApi(slug,values, user.token)
+  .then(res=>{
+setLoading(true);
+toast.success(`${res.data.title} is updated`);
+navigate("/admin/products");
+  }).catch(err=>{
+    setLoading(false)
+   toast.error(err.message)
+  })
  }
  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -83,13 +101,13 @@ const ProductUpdate = () => {
     const handleCategoryChange=async(e)=>{
       e.preventDefault()
    
-      setValues({...values,subcategory:[],category :e.target.value})
-   
+      setValues({...values,subcategory:[]})
+    setSelectedCategory(e.target.value)
       try {
      const res= await   getCategorySubcategoryApi(e.target.value)
     
      setSubOptions( res.data);
-      setArrayOfSub([])
+      
      
       } catch (error) {
         if (error instanceof Error) {
@@ -98,6 +116,16 @@ const ProductUpdate = () => {
         }
      
       }
+
+      // if user clicks back to the original category
+      // show its sub categories in default
+      if (values.category._id === e.target.value) {
+        loadProduct();
+      }
+        //clear sub category array
+        setArrayOfSub([])
+      
+     
     }
   return (
     <div className="container-fluid">
@@ -106,12 +134,17 @@ const ProductUpdate = () => {
         <AdminNav />
       </div>
       <div className="col-md-10">
-      <h4>Product Update</h4>
-      {JSON.stringify(values)}
+      { loading ? <LoadingOutlined  className="text-danger"/> :  <h4>Product Update</h4> }
+     <div className="p-3">
+      <Fileupload
+      values={values}
+      setValues={setValues} 
+      setLoading={setLoading}/>
+     </div>
 <hr />
 <ProductUpdateForm handleSubmit={handleSubmit} handleChange={handleChange} 
 values={values} setValues={setValues}   handleCategoryChange={handleCategoryChange} subOptions={subOptions}
-categories={categories} arrayOfSub={arrayOfSub} setArrayOfSub={setArrayOfSub}/>
+categories={categories} arrayOfSub={arrayOfSub} setArrayOfSub={setArrayOfSub} selectedCategory={selectedCategory}/>
 
 
       </div>

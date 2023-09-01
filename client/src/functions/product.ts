@@ -51,7 +51,6 @@ export const removeProductApi = async(slug: string
      }
     export const updateProductApi = async(slug:string, product:TProduct, authtoken: string)=>{
 
- 
       return await axios.put(
        ` ${import.meta.env.VITE_APP_API}/product/${slug}`,
        product,
